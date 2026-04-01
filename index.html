@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>For My Sister 💖</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: black;
+            color: white;
+            text-align: center;
+        }
+
+        .screen {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1, p {
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+        h1 { animation-delay: 1s; }
+        p:nth-of-type(1) { animation-delay: 3s; }
+        p:nth-of-type(2) { animation-delay: 5s; }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 18px;
+            background: #ff4d6d;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+            animation-delay: 7s;
+        }
+
+        button:hover {
+            background: #e63950;
+        }
+
+        #slideshow {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #slide {
+            width: 300px;
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .ending {
+            display: none;
+            font-size: 24px;
+            margin-top: 20px;
+            animation: fadeIn 3s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="screen">
+
+    <h1>For Someone Very Special 💖</h1>
+    <p>You are not just my sister...</p>
+    <p>You are my best friend, my happiness, my everything.</p>
+
+    <button onclick="startSurprise()">Tap to Begin 🎁</button>
+
+    <div id="slideshow">
+        <img id="slide">
+    </div>
+
+    <div class="ending" id="ending">
+        I’m so lucky to have you ❤️
+    </div>
+
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const images = [
+    "photo1.jpg",
+    "photo2.jpg",
+    "photo3.jpg",
+    "photo4.jpg",
+    "photo5.jpg",
+    "photo6.jpg",
+    "photo7.jpg",
+    "photo8.jpg",
+    "photo9.jpg"
+];
+
+let index = 0;
+
+function startSurprise() {
+    document.getElementById("slideshow").style.display = "block";
+
+    const music = document.getElementById("bgMusic");
+    music.play().catch(() => {
+        console.log("Music autoplay blocked");
+    });
+
+    showSlides();
+}
+
+function showSlides() {
+    const slide = document.getElementById("slide");
+
+    slide.style.opacity = 0;
+
+    setTimeout(() => {
+        slide.src = images[index];
+        slide.style.opacity = 1;
+    }, 500);
+
+    index++;
+
+    if (index < images.length) {
+        setTimeout(showSlides, 3000);
+    } else {
+        setTimeout(() => {
+            document.getElementById("ending").style.display = "block";
+        }, 2000);
+    }
+}
+</script>
+
+</body>
+</html>
