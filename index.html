@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>For My Sister 💖</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: black;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .screen {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #typing {
+            font-size: 24px;
+            border-right: 2px solid white;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 18px;
+            background: #ff4d6d;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        #slideshow {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #slide {
+            width: 300px;
+            border-radius: 12px;
+            opacity: 0;
+            transform: scale(1);
+            transition: opacity 1s ease-in-out, transform 3s ease-in-out;
+        }
+
+        .ending {
+            display: none;
+            font-size: 26px;
+            margin-top: 20px;
+        }
+
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 20px;
+            animation: floatUp 5s linear infinite;
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(100vh); opacity:1; }
+            to { transform: translateY(-10vh); opacity:0; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="screen">
+
+    <div id="typing"></div>
+
+    <button id="startBtn" onclick="startSurprise()">Tap to Begin 🎁</button>
+
+    <div id="slideshow">
+        <img id="slide">
+    </div>
+
+    <div class="ending" id="ending">
+        I’m so lucky to have you ❤️
+    </div>
+
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* ================= Typing Effect ================= */
+const typingText = "For the best sister in the world 💖";
+let charIndex = 0;
+const typingDiv = document.getElementById("typing");
+
+function typeText() {
+    if(charIndex < typingText.length){
+        typingDiv.innerHTML += typingText[charIndex];
+        charIndex++;
+        setTimeout(typeText, 100); // typing speed
+    } else {
+        document.getElementById("startBtn").style.opacity = 1; // show button after typing
+    }
+}
+window.onload = typeText;
+
+/* ================= Slideshow ================= */
+const images = [
+    "photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg","photo5.jpg",
+    "photo6.jpg","photo7.jpg","photo8.jpg","photo9.jpg","photo10.jpg"
+];
+let index = 0;
+
+function startSurprise() {
+    document.getElementById("slideshow").style.display = "block";
+
+    const music = document.getElementById("bgMusic");
+    music.play().catch(()=>{}); // autoplay fix
+
+    createHearts();
+    showSlides();
+}
+
+function showSlides() {
+    const slide = document.getElementById("slide");
+
+    slide.style.opacity = 0;
+    setTimeout(()=>{
+        slide.src = images[index];
+        slide.style.opacity = 1;
+        slide.style.transform = "scale(1.1)";
+    },500);
+
+    setTimeout(()=>{
+        slide.style.transform = "scale(1)";
+    },2500);
+
+    index++;
+    if(index < images.length){
+        setTimeout(showSlides,4000); // each pic 4 seconds
+    } else {
+        setTimeout(()=>{
+            document.getElementById("ending").style.display = "block";
+            launchConfetti();
+        },2000);
+    }
+}
+
+/* ================= Hearts Animation ================= */
+function createHearts(){
+    setInterval(()=>{
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random()*100+"vw";
+        heart.style.fontSize = (Math.random()*20+10)+"px";
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),5000);
+    },300);
+}
+
+/* ================= Confetti ================= */
+function launchConfetti(){
+    for(let i=0;i<100;i++){
+        const confetti = document.createElement("div");
+        confetti.style.position="absolute";
+        confetti.style.width="8px";
+        confetti.style.height="8px";
+        confetti.style.background="hsl("+Math.random()*360+",100%,50%)";
+        confetti.style.top=Math.random()*100+"vh";
+        confetti.style.left=Math.random()*100+"vw";
+        document.body.appendChild(confetti);
+        setTimeout(()=>confetti.remove(),3000);
+    }
+}
+</script>
+
+</body>
+</html>
